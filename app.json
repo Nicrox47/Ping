@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "Ping",
+    "slug": "ping",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "ping",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "plugins": ["expo-router"],
+    "experiments": { "typedRoutes": true },
+    "android": { "package": "com.ping.app" },
+    "ios": { "bundleIdentifier": "com.ping.app" }
+  }
+}
