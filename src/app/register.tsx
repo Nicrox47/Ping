@@ -24,9 +24,7 @@ export default function RegisterScreen() {
       return;
     }
 
-    Alert.alert('Cuenta lista', 'La conexión con el servicio de autenticación se agregará en el siguiente incremento.', [
-      { text: 'Continuar', onPress: () => router.replace('/home') },
-    ]);
+    router.push('/profile');
   }
 
   return (
@@ -34,19 +32,15 @@ export default function RegisterScreen() {
       <Pressable onPress={() => router.back()}>
         <Text style={styles.back}>‹ Volver</Text>
       </Pressable>
-
       <Text style={styles.title}>Crea tu cuenta</Text>
       <Text style={styles.subtitle}>Empieza a descubrir personas en tus eventos.</Text>
-
       <View style={styles.form}>
         <AuthField label="Nombre" value={name} placeholder="Tu nombre" onChangeText={setName} />
         <AuthField label="Correo electrónico" value={email} placeholder="correo@ejemplo.com" keyboardType="email-address" onChangeText={setEmail} />
         <AuthField label="Contraseña" value={password} placeholder="Mínimo 8 caracteres" secure onChangeText={setPassword} />
-
         <Pressable style={styles.button} onPress={handleRegister}>
           <Text style={styles.buttonText}>Crear cuenta</Text>
         </Pressable>
-
         <Pressable onPress={() => router.replace('/login')} style={styles.linkButton}>
           <Text style={styles.link}>¿Ya tienes cuenta? <Text style={styles.linkStrong}>Inicia sesión</Text></Text>
         </Pressable>
