@@ -4,6 +4,10 @@
 
 Ping utilizará un monolito modular. La aplicación se desplegará como una sola aplicación, pero su código se dividirá por dominios funcionales.
 
+## Roles
+
+Ping separa la plataforma en tres roles: usuario final (`customer`), organizador (`organizer`) y administrador (`admin`). El administrador no se registra públicamente; sus permisos se asignarán desde la gestión de plataforma.
+
 ## Módulos
 
 - Autenticación y usuarios
@@ -14,6 +18,16 @@ Ping utilizará un monolito modular. La aplicación se desplegará como una sola
 - Puntos y ranking
 - Seguridad y reportes
 - Administración
+
+## Capacidades por rol
+
+- `customer`: descubrimiento de eventos, check-in, matching, pistas, encuentros, puntos y ranking.
+- `organizer`: creación y publicación de eventos, ubicación/mapa, promoción, asistentes y métricas.
+- `admin`: usuarios, organizadores, eventos, moderación, estadísticas, configuraciones y auditoría.
+
+## Adaptabilidad
+
+La interfaz será responsive y mobile-first para celular, tablet y computador. Los componentes compartirán una base común y ajustarán distribución, ancho máximo y espaciado según el tamaño de pantalla.
 
 ## Principios
 
