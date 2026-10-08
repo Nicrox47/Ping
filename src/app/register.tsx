@@ -4,7 +4,7 @@ import { router } from 'expo-router';
 import { AuthField } from '@/features/auth/AuthField';
 import { isValidEmail, validateName, validatePassword } from '@/features/auth/validation';
 import { colors, radius, spacing } from '@/constants/theme';
-import { ACCOUNT_ROLES, AccountRole } from '@/features/auth/roles';
+import { ACCOUNT_ROLES, type AccountRole } from '@/features/auth/roles';
 
 export default function RegisterScreen() {
   const [name, setName] = useState('');
