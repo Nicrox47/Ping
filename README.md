@@ -11,6 +11,13 @@ Aplicación móvil gamificada para facilitar encuentros entre personas que compa
 ### Objetivo
 Ping permite que los asistentes a un evento se conecten mediante intereses en común y reciban pistas progresivas para encontrarse físicamente, confirmar el encuentro y obtener puntos.
 
+### Tipos de cuenta
+- **Usuario final:** descubre eventos, participa y busca conexiones.
+- **Organizador:** crea, publica y promociona eventos; gestiona ubicación y métricas.
+- **Administrador:** gestiona usuarios, eventos, moderación, estadísticas y configuración de la plataforma.
+
+La interfaz será adaptable a celular, tablet y computador.
+
 ### MVP
 - Registro e inicio de sesión
 - Perfil e intereses
