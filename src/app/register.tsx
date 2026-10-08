@@ -4,11 +4,13 @@ import { router } from 'expo-router';
 import { AuthField } from '@/features/auth/AuthField';
 import { isValidEmail, validateName, validatePassword } from '@/features/auth/validation';
 import { colors, radius, spacing } from '@/constants/theme';
+import { ACCOUNT_ROLES, AccountRole } from '@/features/auth/roles';
 
 export default function RegisterScreen() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState<AccountRole>('customer');
 
   function handleRegister() {
     if (!validateName(name)) {
@@ -21,6 +23,11 @@ export default function RegisterScreen() {
     }
     if (!validatePassword(password)) {
       Alert.alert('Contraseña inválida', 'La contraseña debe tener al menos 8 caracteres.');
+      return;
+    }
+
+    if (role === 'organizer') {
+      router.replace('/organizer');
       return;
     }
 
@@ -38,6 +45,19 @@ export default function RegisterScreen() {
         <AuthField label="Nombre" value={name} placeholder="Tu nombre" onChangeText={setName} />
         <AuthField label="Correo electrónico" value={email} placeholder="correo@ejemplo.com" keyboardType="email-address" onChangeText={setEmail} />
         <AuthField label="Contraseña" value={password} placeholder="Mínimo 8 caracteres" secure onChangeText={setPassword} />
+        <Text style={styles.roleLabel}>Tipo de cuenta</Text>
+        <View style={styles.roles}>
+          {ACCOUNT_ROLES.filter((item) => item.id !== 'admin').map((item) => (
+            <Pressable
+              key={item.id}
+              onPress={() => setRole(item.id)}
+              style={[styles.roleCard, role === item.id && styles.roleCardActive]}
+            >
+              <Text style={[styles.roleTitle, role === item.id && styles.roleTitleActive]}>{item.title}</Text>
+              <Text style={styles.roleDescription}>{item.description}</Text>
+            </Pressable>
+          ))}
+        </View>
         <Pressable style={styles.button} onPress={handleRegister}>
           <Text style={styles.buttonText}>Crear cuenta</Text>
         </Pressable>
@@ -55,6 +75,13 @@ const styles = StyleSheet.create({
   title: { color: colors.text, fontSize: 32, fontWeight: '800', marginTop: spacing.xxl },
   subtitle: { color: colors.textMuted, fontSize: 15, marginTop: spacing.sm },
   form: { marginTop: spacing.xl },
+  roleLabel: { color: colors.text, fontSize: 14, fontWeight: '800', marginTop: spacing.lg },
+  roles: { gap: spacing.sm, marginTop: spacing.sm },
+  roleCard: { backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1, borderRadius: radius.md, padding: spacing.md },
+  roleCardActive: { borderColor: colors.accent, backgroundColor: colors.surfaceElevated },
+  roleTitle: { color: colors.text, fontSize: 16, fontWeight: '800' },
+  roleTitleActive: { color: colors.accent },
+  roleDescription: { color: colors.textMuted, fontSize: 12, lineHeight: 18, marginTop: 4 },
   button: {
     minHeight: 56, borderRadius: radius.md, backgroundColor: colors.accent,
     alignItems: 'center', justifyContent: 'center', marginTop: spacing.xl,
