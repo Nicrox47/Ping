@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { AuthField } from '@/features/auth/AuthField';
 import { isValidEmail, validateName, validatePassword } from '@/features/auth/validation';
@@ -35,7 +35,7 @@ export default function RegisterScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.scroll} contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
       <Pressable onPress={() => router.back()}>
         <Text style={styles.back}>‹ Volver</Text>
       </Pressable>
@@ -65,12 +65,13 @@ export default function RegisterScreen() {
           <Text style={styles.link}>¿Ya tienes cuenta? <Text style={styles.linkStrong}>Inicia sesión</Text></Text>
         </Pressable>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background, padding: spacing.lg, paddingTop: spacing.xxl },
+  scroll: { flex: 1 },
+  container: { flexGrow: 1, backgroundColor: colors.background, padding: spacing.lg, paddingTop: spacing.xxl, paddingBottom: spacing.xxl },
   back: { color: colors.accent, fontSize: 16, fontWeight: '700' },
   title: { color: colors.text, fontSize: 32, fontWeight: '800', marginTop: spacing.xxl },
   subtitle: { color: colors.textMuted, fontSize: 15, marginTop: spacing.sm },
