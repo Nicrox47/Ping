@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { router } from 'expo-router';
 import { colors, radius, spacing } from '@/constants/theme';
 
 export default function HomeScreen() {
@@ -14,8 +15,8 @@ export default function HomeScreen() {
         </View>
         <View style={styles.dot} />
       </View>
-      <Pressable style={styles.button}>
-        <Text style={styles.buttonText}>Buscar mi conexión</Text>
+      <Pressable style={styles.button} onPress={() => router.push('/location')}>
+        <Text style={styles.buttonText}>Ver mapa y mi ubicación</Text>
       </Pressable>
     </View>
   );
