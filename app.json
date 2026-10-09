@@ -7,9 +7,23 @@
     "scheme": "ping",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
-    "plugins": ["expo-router"],
-    "experiments": { "typedRoutes": true },
-    "android": { "package": "com.ping.app" },
-    "ios": { "bundleIdentifier": "com.ping.app" }
+    "plugins": [
+      "expo-router",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Ping usa tu ubicación mientras utilizas el mapa para mostrar tu posición y calcular la distancia a un evento."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "android": {
+      "package": "com.ping.app"
+    },
+    "ios": {
+      "bundleIdentifier": "com.ping.app"
+    }
   }
 }
