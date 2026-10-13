@@ -19,7 +19,7 @@ export default function ShopScreen() {
     }
     setPoints((current) => current - price);
     setOwned((current) => [...current, itemId]);
-    Alert.alert('¡Artículo desbloqueado!', `${name} se añadió a tu colección de demostración.`);
+    Alert.alert('¡Artículo desbloqueado!', `${name} se añadió a tu colección.`);
   }
 
   return (
@@ -29,7 +29,7 @@ export default function ShopScreen() {
       <Text style={styles.title}>Tu estilo, tus puntos.</Text>
       <Text style={styles.subtitle}>Canjea puntos ganados en los encuentros por artículos cosméticos para personalizar tu perfil.</Text>
       <View style={styles.wallet}>
-        <Text style={styles.walletLabel}>SALDO DE DEMOSTRACIÓN</Text>
+        <Text style={styles.walletLabel}>MIS PUNTOS</Text>
         <Text style={styles.balance}>{points} pts</Text>
       </View>
       {SHOP_ITEMS.map((item) => {
@@ -48,7 +48,7 @@ export default function ShopScreen() {
           </View>
         );
       })}
-      <Text style={styles.footnote}>Prototipo local: saldo y compras no se guardan ni se sincronizan entre dispositivos todavía.</Text>
+      <Text style={styles.footnote}>La sincronización de puntos y compras entre dispositivos requiere conectar el inventario a la cuenta.</Text>
     </ScrollView>
   );
 }
