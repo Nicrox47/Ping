@@ -1,75 +1,79 @@
 import { useEffect, useRef } from 'react';
-import { Animated, ImageBackground, StyleSheet, Text, View, Pressable, ScrollView } from 'react-native';
+import { Animated, ImageBackground, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { colors, radius, spacing } from '@/constants/theme';
 
-const HERO_IMAGE = 'https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&w=1400&q=85';
+const HERO_IMAGE = 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1400&q=85';
+
+const interests = ['🎮 Gaming', '⛩️ Anime', '🎧 Música', '🕹️ Retro'];
 
 export default function HomeScreen() {
   const fade = useRef(new Animated.Value(0)).current;
-  const rise = useRef(new Animated.Value(18)).current;
-
   useEffect(() => {
-    Animated.parallel([
-      Animated.timing(fade, { toValue: 1, duration: 650, useNativeDriver: true }),
-      Animated.timing(rise, { toValue: 0, duration: 650, useNativeDriver: true }),
-    ]).start();
-  }, [fade, rise]);
+    Animated.timing(fade, { toValue: 1, duration: 420, useNativeDriver: true }).start();
+  }, [fade]);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Animated.View style={{ opacity: fade, transform: [{ translateY: rise }] }}>
-        <Text style={styles.eyebrow}>PING · PLAY YOUR STORY</Text>
-        <Text style={styles.title}>Tu próxima conexión empieza aquí.</Text>
-        <Text style={styles.subtitle}>Encuentra personas en tus eventos con pistas, gana puntos y crea tu identidad de jugador.</Text>
+    <ScrollView style={styles.container} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+      <Animated.View style={{ opacity: fade }}>
+        <View style={styles.topBar}>
+          <View>
+            <Text style={styles.brand}>ping<Text style={styles.brandDot}>.</Text></Text>
+            <Text style={styles.location}>VILLAVICENCIO · META</Text>
+          </View>
+          <Pressable accessibilityRole="button" onPress={() => router.push('/profile')} style={styles.avatar}><Text style={styles.avatarText}>P</Text></Pressable>
+        </View>
+
+        <View style={styles.greeting}>
+          <Text style={styles.kicker}>TU COMUNIDAD, A TU RITMO</Text>
+          <Text style={styles.title}>¿Qué vamos a descubrir hoy?</Text>
+          <Text style={styles.subtitle}>Conecta por tus gustos. Encuentra a tu gente fuera de la pantalla.</Text>
+        </View>
 
         <ImageBackground source={{ uri: HERO_IMAGE }} imageStyle={styles.heroImage} style={styles.hero}>
           <View style={styles.heroShade}>
-            <View style={styles.liveBadge}><View style={styles.liveDot} /><Text style={styles.liveText}>EVENTO ACTIVO</Text></View>
-            <Text style={styles.heroTitle}>¿Listo para el encuentro?</Text>
-            <Text style={styles.heroDescription}>Sigue las pistas. Descubre a tu jugador. Haz que la historia avance.</Text>
-            <Pressable style={styles.heroButton} onPress={() => router.push('/clues')}>
-              <Text style={styles.heroButtonText}>EMPEZAR BÚSQUEDA  →</Text>
+            <View style={styles.livePill}><View style={styles.liveDot} /><Text style={styles.liveText}>PLANES PARA EXPLORAR</Text></View>
+            <Text style={styles.heroTitle}>Tu próxima historia empieza en persona.</Text>
+            <Text style={styles.heroCopy}>Sigue las pistas, encuentra a tu jugador y comparte el momento.</Text>
+            <Pressable accessibilityRole="button" onPress={() => router.push('/clues')} style={styles.primaryButton}>
+              <Text style={styles.primaryButtonText}>Buscar jugador  ↗</Text>
             </Pressable>
           </View>
         </ImageBackground>
 
-        <View style={styles.sectionHeading}>
-          <Text style={styles.sectionTitle}>Tu zona de juego</Text>
-          <Text style={styles.sectionCaption}>ELIGE TU SIGUIENTE PASO</Text>
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Tu universo</Text>
+          <Pressable onPress={() => router.push('/profile')}><Text style={styles.link}>Editar intereses</Text></Pressable>
         </View>
-        <View style={styles.actionGrid}>
-          <Pressable style={styles.actionCard} onPress={() => router.push('/clues')}>
-            <Text style={styles.actionIcon}>⌕</Text>
-            <Text style={styles.actionTitle}>Cazar pistas</Text>
-            <Text style={styles.actionDescription}>Descubre quién es tu objetivo.</Text>
+        <View style={styles.chips}>{interests.map((interest) => <View key={interest} style={styles.chip}><Text style={styles.chipText}>{interest}</Text></View>)}</View>
+
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Explora Ping</Text>
+          <Text style={styles.sectionHint}>A TU MANERA</Text>
+        </View>
+        <View style={styles.tiles}>
+          <Pressable onPress={() => router.push('/location')} style={[styles.tile, styles.mapTile]}>
+            <Text style={styles.tileEmoji}>📍</Text><Text style={styles.tileTitle}>Mapa social</Text><Text style={styles.tileCopy}>Descubre lugares y eventos en Villavicencio.</Text><Text style={styles.tileArrow}>Abrir mapa ↗</Text>
           </Pressable>
-          <Pressable style={styles.actionCard} onPress={() => router.push('/profile')}>
-            <Text style={styles.actionIcon}>✦</Text>
-            <Text style={styles.actionTitle}>Mi perfil</Text>
-            <Text style={styles.actionDescription}>Muestra tus intereses y estilo.</Text>
+          <Pressable onPress={() => router.push('/clues')} style={[styles.tile, styles.clueTile]}>
+            <Text style={styles.tileEmoji}>🧩</Text><Text style={styles.tileTitle}>Caza de pistas</Text><Text style={styles.tileCopy}>Encuentra a alguien a partir de sus gustos.</Text><Text style={styles.tileArrow}>Empezar ↗</Text>
           </Pressable>
-          <Pressable style={styles.actionCard} onPress={() => router.push('/shop')}>
-            <Text style={styles.actionIcon}>◇</Text>
-            <Text style={styles.actionTitle}>Tienda</Text>
-            <Text style={styles.actionDescription}>Canjea puntos por cosméticos.</Text>
+          <Pressable onPress={() => router.push('/profile')} style={styles.tile}>
+            <Text style={styles.tileEmoji}>🎭</Text><Text style={styles.tileTitle}>Mi identidad</Text><Text style={styles.tileCopy}>Comparte tu vibra, anime y juegos favoritos.</Text><Text style={styles.tileArrow}>Ver perfil ↗</Text>
           </Pressable>
-          <Pressable style={styles.actionCard} onPress={() => router.push('/location')}>
-            <Text style={styles.actionIcon}>◎</Text>
-            <Text style={styles.actionTitle}>Mapa en vivo</Text>
-            <Text style={styles.actionDescription}>Mira tu ubicación en el evento.</Text>
+          <Pressable onPress={() => router.push('/shop')} style={styles.tile}>
+            <Text style={styles.tileEmoji}>✨</Text><Text style={styles.tileTitle}>Personalización</Text><Text style={styles.tileCopy}>Dale tu propio estilo a tu espacio.</Text><Text style={styles.tileArrow}>Explorar ↗</Text>
           </Pressable>
         </View>
-        <View style={styles.eventCard}>
-          <View style={styles.eventIcon}><Text style={styles.eventIconText}>P</Text></View>
-          <View style={styles.eventBody}>
-            <Text style={styles.eventLabel}>MODO DEMOSTRACIÓN</Text>
-            <Text style={styles.eventName}>Evento de prueba · Cúcuta</Text>
-            <Text style={styles.eventInfo}>Prueba las funciones antes de conectar el backend.</Text>
+
+        <View style={styles.communityCard}>
+          <View style={styles.communityIcon}><Text style={styles.communityIconText}>♫</Text></View>
+          <View style={styles.communityBody}>
+            <Text style={styles.communityTitle}>Encuentra tu party</Text>
+            <Text style={styles.communityCopy}>Gamers, fans del anime y amantes de la música: las mejores conexiones empiezan con algo en común.</Text>
           </View>
-          <View style={styles.dot} />
         </View>
-        <Text style={styles.footnote}>Los puntos, las compras y las búsquedas siguen siendo de demostración local. Para compartirlos entre teléfonos hace falta conectar un backend y cuentas reales.</Text>
+        <Text style={styles.footer}>PING · CONEXIONES QUE SALEN DE LA PANTALLA</Text>
       </Animated.View>
     </ScrollView>
   );
@@ -77,35 +81,47 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
-  content: { padding: spacing.lg, paddingTop: spacing.xl, paddingBottom: spacing.xxl, maxWidth: 900, width: '100%', alignSelf: 'center' },
-  eyebrow: { color: colors.accent, fontSize: 11, fontWeight: '900', letterSpacing: 2.4 },
-  title: { color: colors.text, fontSize: 34, lineHeight: 40, fontWeight: '900', marginTop: spacing.md, maxWidth: 580 },
-  subtitle: { color: colors.textMuted, fontSize: 15, lineHeight: 23, marginTop: spacing.sm, maxWidth: 600 },
-  hero: { minHeight: 300, marginTop: spacing.xl, borderRadius: radius.lg, overflow: 'hidden', justifyContent: 'flex-end', backgroundColor: '#21152B' },
+  content: { paddingHorizontal: spacing.md, paddingTop: spacing.md, paddingBottom: spacing.xxl, width: '100%', maxWidth: 900, alignSelf: 'center' },
+  topBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.xl },
+  brand: { color: colors.text, fontSize: 32, fontWeight: '900', letterSpacing: -1.5 },
+  brandDot: { color: colors.accent },
+  location: { color: colors.textMuted, fontSize: 10, fontWeight: '800', letterSpacing: 1.5, marginTop: 1 },
+  avatar: { width: 44, height: 44, borderRadius: 22, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: '#B98AD0' },
+  avatarText: { color: colors.text, fontSize: 17, fontWeight: '900' },
+  greeting: { marginBottom: spacing.lg },
+  kicker: { color: colors.accent, fontSize: 10, fontWeight: '900', letterSpacing: 1.7 },
+  title: { color: colors.text, fontSize: 29, lineHeight: 35, fontWeight: '900', marginTop: spacing.sm, letterSpacing: -0.6 },
+  subtitle: { color: colors.textMuted, fontSize: 14, lineHeight: 21, marginTop: spacing.sm, maxWidth: 560 },
+  hero: { minHeight: 310, borderRadius: radius.lg, overflow: 'hidden', backgroundColor: '#25192D', justifyContent: 'flex-end' },
   heroImage: { borderRadius: radius.lg },
-  heroShade: { minHeight: 300, justifyContent: 'flex-end', padding: spacing.lg, backgroundColor: 'rgba(5,5,5,0.57)' },
-  liveBadge: { flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-start', backgroundColor: 'rgba(5,5,5,0.72)', borderRadius: radius.pill, paddingHorizontal: 12, paddingVertical: 8, marginBottom: spacing.md },
-  liveDot: { width: 7, height: 7, borderRadius: 5, backgroundColor: colors.success, marginRight: 8 },
-  liveText: { color: colors.text, fontSize: 10, fontWeight: '900', letterSpacing: 1.4 },
-  heroTitle: { color: colors.text, fontSize: 27, lineHeight: 32, fontWeight: '900', maxWidth: 440 },
-  heroDescription: { color: '#F0EAF2', fontSize: 14, lineHeight: 21, marginTop: spacing.xs, maxWidth: 480 },
-  heroButton: { alignSelf: 'flex-start', backgroundColor: colors.accent, borderRadius: radius.md, paddingHorizontal: spacing.md, minHeight: 48, justifyContent: 'center', marginTop: spacing.lg },
-  heroButtonText: { color: colors.background, fontSize: 12, fontWeight: '900', letterSpacing: 0.5 },
-  sectionHeading: { marginTop: spacing.xl, marginBottom: spacing.sm },
-  sectionTitle: { color: colors.text, fontSize: 21, fontWeight: '900' },
-  sectionCaption: { color: colors.textMuted, fontSize: 10, fontWeight: '800', letterSpacing: 1.6, marginTop: 5 },
-  actionGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
-  actionCard: { flexGrow: 1, flexBasis: 145, minHeight: 140, backgroundColor: colors.surface, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, padding: spacing.md },
-  actionIcon: { color: colors.accent, fontSize: 25, fontWeight: '900', marginBottom: spacing.sm },
-  actionTitle: { color: colors.text, fontSize: 15, fontWeight: '900' },
-  actionDescription: { color: colors.textMuted, fontSize: 12, lineHeight: 17, marginTop: 5 },
-  eventCard: { backgroundColor: colors.surfaceElevated, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, padding: spacing.md, marginTop: spacing.lg, flexDirection: 'row', alignItems: 'center' },
-  eventIcon: { width: 42, height: 42, borderRadius: 14, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center', marginRight: spacing.md },
-  eventIconText: { color: colors.accent, fontSize: 20, fontWeight: '900' },
-  eventBody: { flex: 1 },
-  eventLabel: { color: colors.primaryLight, fontSize: 10, fontWeight: '900', letterSpacing: 1.1 },
-  eventName: { color: colors.text, fontSize: 15, fontWeight: '800', marginTop: 4 },
-  eventInfo: { color: colors.textMuted, fontSize: 12, lineHeight: 17, marginTop: 4 },
-  dot: { width: 9, height: 9, borderRadius: 5, backgroundColor: colors.success, marginLeft: spacing.sm },
-  footnote: { color: colors.textMuted, fontSize: 11, lineHeight: 17, marginTop: spacing.lg },
+  heroShade: { minHeight: 310, justifyContent: 'flex-end', padding: spacing.lg, backgroundColor: 'rgba(8, 5, 12, 0.58)' },
+  livePill: { flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-start', backgroundColor: 'rgba(20, 17, 25, 0.84)', borderRadius: radius.pill, paddingHorizontal: 12, paddingVertical: 8, marginBottom: spacing.md },
+  liveDot: { width: 7, height: 7, borderRadius: 4, backgroundColor: '#B9F3C7', marginRight: 8 },
+  liveText: { color: '#F7F3F9', fontSize: 9, fontWeight: '900', letterSpacing: 1.1 },
+  heroTitle: { color: '#FFFFFF', fontSize: 27, lineHeight: 32, fontWeight: '900', maxWidth: 430 },
+  heroCopy: { color: '#E8E1EA', fontSize: 13, lineHeight: 20, marginTop: spacing.sm, maxWidth: 460 },
+  primaryButton: { alignSelf: 'flex-start', backgroundColor: colors.accent, borderRadius: radius.pill, paddingHorizontal: 19, minHeight: 46, justifyContent: 'center', marginTop: spacing.lg },
+  primaryButtonText: { color: '#21182A', fontSize: 13, fontWeight: '900' },
+  sectionHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: spacing.xl, marginBottom: spacing.md },
+  sectionTitle: { color: colors.text, fontSize: 20, fontWeight: '900', letterSpacing: -0.3 },
+  link: { color: '#C9A3E8', fontSize: 12, fontWeight: '800' },
+  sectionHint: { color: colors.textMuted, fontSize: 9, fontWeight: '800', letterSpacing: 1.1 },
+  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  chip: { backgroundColor: '#1A1620', borderWidth: 1, borderColor: '#35273E', borderRadius: radius.pill, paddingHorizontal: 12, paddingVertical: 9 },
+  chipText: { color: '#EDE5F2', fontSize: 12, fontWeight: '700' },
+  tiles: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+  tile: { flexGrow: 1, flexBasis: 220, minHeight: 165, backgroundColor: '#151319', borderColor: '#2B2630', borderWidth: 1, borderRadius: radius.lg, padding: spacing.md },
+  mapTile: { backgroundColor: '#191623' },
+  clueTile: { backgroundColor: '#201824' },
+  tileEmoji: { fontSize: 22, marginBottom: spacing.sm },
+  tileTitle: { color: colors.text, fontSize: 16, fontWeight: '900' },
+  tileCopy: { color: colors.textMuted, fontSize: 12, lineHeight: 18, marginTop: 5, flex: 1 },
+  tileArrow: { color: '#D4B3E9', fontSize: 12, fontWeight: '900', marginTop: spacing.md },
+  communityCard: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, marginTop: spacing.lg, padding: spacing.md, borderRadius: radius.lg, backgroundColor: '#17141B', borderWidth: 1, borderColor: '#302837' },
+  communityIcon: { width: 48, height: 48, borderRadius: 16, backgroundColor: '#34203F', alignItems: 'center', justifyContent: 'center' },
+  communityIconText: { color: '#E0B9FF', fontSize: 26, fontWeight: '900' },
+  communityBody: { flex: 1 },
+  communityTitle: { color: colors.text, fontSize: 15, fontWeight: '900' },
+  communityCopy: { color: colors.textMuted, fontSize: 12, lineHeight: 18, marginTop: 4 },
+  footer: { color: '#77717D', fontSize: 9, fontWeight: '800', letterSpacing: 1.3, textAlign: 'center', marginTop: spacing.xl },
 });
