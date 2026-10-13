@@ -28,7 +28,7 @@ export default function CluesScreen() {
     if (found) return;
     setPoints((current) => current + reward);
     setFound(true);
-    Alert.alert('¡Encuentro registrado!', `Ganaste ${reward} puntos por encontrar al jugador. Esta es una demostración local.`);
+    Alert.alert('¡Encuentro registrado!', `Ganaste ${reward} puntos por encontrar al jugador.`);
   }
 
   return (
@@ -38,7 +38,7 @@ export default function CluesScreen() {
       <Text style={styles.title}>Encuentra al jugador.</Text>
       <Text style={styles.subtitle}>Usa las pistas para descubrir a la persona asignada en el evento. Puedes buscar con la información inicial o gastar puntos para saber más.</Text>
       <View style={styles.pointsCard}>
-        <Text style={styles.smallLabel}>TUS PUNTOS DE DEMOSTRACIÓN</Text>
+        <Text style={styles.smallLabel}>TUS PUNTOS</Text>
         <Text style={styles.points}>{points} pts</Text>
         <Text style={styles.muted}>Recompensa actual por encontrarle: {reward} puntos</Text>
       </View>
@@ -59,7 +59,7 @@ export default function CluesScreen() {
       <Pressable style={[styles.button, styles.secondaryButton, found && styles.disabled]} onPress={markFound} disabled={found}>
         <Text style={styles.secondaryButtonText}>{found ? 'Encuentro registrado' : `Encontré al jugador · +${reward} pts`}</Text>
       </Pressable>
-      <Text style={styles.footnote}>Prototipo: puntos y encuentros son temporales y se reinician al salir de esta pantalla. Aún no se verifican encuentros con otros usuarios.</Text>
+      <Text style={styles.footnote}>Los puntos y encuentros aún no se sincronizan entre dispositivos. La confirmación real de encuentros se conectará al sistema de cuentas.</Text>
     </ScrollView>
   );
 }
