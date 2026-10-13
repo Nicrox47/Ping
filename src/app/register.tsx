@@ -1,37 +1,55 @@
 import { useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { AuthField } from '@/features/auth/AuthField';
 import { isValidEmail, validateName, validatePassword } from '@/features/auth/validation';
 import { colors, radius, spacing } from '@/constants/theme';
 import { ACCOUNT_ROLES, type AccountRole } from '@/features/auth/roles';
+import { supabase } from '@/lib/supabase';
 
 export default function RegisterScreen() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState<AccountRole>('customer');
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  function handleRegister() {
+  async function handleRegister() {
+    const normalizedEmail = email.trim().toLowerCase();
     if (!validateName(name)) {
-      Alert.alert('Nombre inválido', 'Ingresa tu nombre para continuar.');
+      setErrorMessage('Ingresa tu nombre (mínimo 2 caracteres).');
       return;
     }
-    if (!isValidEmail(email)) {
-      Alert.alert('Correo inválido', 'Ingresa un correo electrónico válido.');
+    if (!isValidEmail(normalizedEmail)) {
+      setErrorMessage('Ingresa un correo electrónico válido.');
       return;
     }
     if (!validatePassword(password)) {
-      Alert.alert('Contraseña inválida', 'La contraseña debe tener al menos 8 caracteres.');
+      setErrorMessage('La contraseña debe tener al menos 8 caracteres.');
       return;
     }
 
-    if (role === 'organizer') {
-      router.replace('/organizer');
+    setLoading(true);
+    setErrorMessage('');
+    const { error } = await supabase.auth.signUp({
+      email: normalizedEmail,
+      password,
+      options: {
+        data: {
+          full_name: name.trim(),
+          role: role === 'organizer' ? 'organizer' : 'customer',
+        },
+      },
+    });
+    setLoading(false);
+
+    if (error) {
+      setErrorMessage(error.message);
       return;
     }
 
-    router.push('/profile');
+    router.push({ pathname: '/verify-email', params: { email: normalizedEmail } });
   }
 
   return (
@@ -58,8 +76,9 @@ export default function RegisterScreen() {
             </Pressable>
           ))}
         </View>
-        <Pressable style={styles.button} onPress={handleRegister}>
-          <Text style={styles.buttonText}>Crear cuenta</Text>
+        {!!errorMessage && <Text accessibilityRole="alert" style={styles.error}>{errorMessage}</Text>}
+        <Pressable disabled={loading} style={[styles.button, loading && styles.disabled]} onPress={handleRegister}>
+          <Text style={styles.buttonText}>{loading ? 'Creando cuenta…' : 'Crear cuenta'}</Text>
         </Pressable>
         <Pressable onPress={() => router.replace('/login')} style={styles.linkButton}>
           <Text style={styles.link}>¿Ya tienes cuenta? <Text style={styles.linkStrong}>Inicia sesión</Text></Text>
@@ -87,8 +106,10 @@ const styles = StyleSheet.create({
     minHeight: 56, borderRadius: radius.md, backgroundColor: colors.accent,
     alignItems: 'center', justifyContent: 'center', marginTop: spacing.xl,
   },
+  disabled: { opacity: 0.6 },
   buttonText: { color: colors.background, fontSize: 17, fontWeight: '800' },
   linkButton: { alignItems: 'center', marginTop: spacing.lg },
   link: { color: colors.textMuted, fontSize: 14 },
   linkStrong: { color: colors.primaryLight, fontWeight: '800' },
+  error: { color: colors.danger, marginTop: spacing.md, lineHeight: 20 },
 });
