@@ -8,10 +8,10 @@ import { distanceInMeters, formatDistance } from '@/features/location/distance';
 import { colors, radius, spacing } from '@/constants/theme';
 
 const DEMO_EVENT = {
-  name: 'Evento de prueba',
-  address: 'Cúcuta, Norte de Santander',
-  latitude: 7.8891,
-  longitude: -72.4967,
+  name: 'Punto de encuentro Ping',
+  address: 'Villavicencio, Meta, Colombia',
+  latitude: 4.1420,
+  longitude: -73.6266,
 };
 
 type Coordinates = { latitude: number; longitude: number };
@@ -83,11 +83,11 @@ export default function LocationScreen() {
       <Text style={styles.eyebrow}>PING · UBICACIÓN</Text>
       <Text style={styles.title}>Tu ubicación en tiempo real</Text>
       <Text style={styles.subtitle}>
-        Muestra tu posición actual y la distancia aproximada al evento de demostración. Ping solo solicita ubicación mientras usas esta pantalla.
+        Explora el área de Villavicencio y consulta tu distancia aproximada al punto de encuentro. Tu ubicación solo se solicita mientras usas esta pantalla.
       </Text>
 
       <View style={styles.eventCard}>
-        <Text style={styles.eventLabel}>EVENTO DE DEMOSTRACIÓN</Text>
+        <Text style={styles.eventLabel}>PUNTO DE ENCUENTRO</Text>
         <Text style={styles.eventName}>{DEMO_EVENT.name}</Text>
         <Text style={styles.eventAddress}>📍 {DEMO_EVENT.address}</Text>
       </View>
@@ -129,7 +129,7 @@ export default function LocationScreen() {
         )}
       </Pressable>
       <Text style={styles.privacy}>
-        Privacidad: la ubicación se usa en esta pantalla y no se envía a otros usuarios ni se guarda en un servidor.
+        Privacidad: por ahora tu posición solo se muestra en tu dispositivo; no se comparte con otros usuarios.
       </Text>
       <Pressable onPress={() => router.back()} style={styles.back}>
         <Text style={styles.backText}>Volver</Text>
